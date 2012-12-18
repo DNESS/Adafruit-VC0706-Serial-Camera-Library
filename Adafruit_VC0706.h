@@ -12,16 +12,19 @@
 
   Written by Limor Fried/Ladyada for Adafruit Industries.  
   BSD license, all text above must be included in any redistribution
+
+ ****************************************************
+
+  This is maple port of library. Possibly might support Arduino Due
+  as well if you change #include "WProgram.h" to #include "Arduino.h"
+  in this file.
+
+  Ported by Oskari Rauta.
+
  ****************************************************/
 
 
-#if ARDUINO >= 100
- #include "Arduino.h"
- #include "SoftwareSerial.h"
-#else
- #include "WProgram.h"
- #include "NewSoftSerial.h"
-#endif
+#include "WProgram.h"
 
 #define VC0706_RESET  0x26
 #define VC0706_GEN_VERSION 0x11
@@ -62,56 +65,48 @@
 
 class Adafruit_VC0706 {
  public:
-#if ARDUINO >= 100
-  Adafruit_VC0706(SoftwareSerial *ser); // Constructor when using SoftwareSerial
-#else
-  Adafruit_VC0706(NewSoftSerial  *ser); // Constructor when using NewSoftSerial
-#endif
   Adafruit_VC0706(HardwareSerial *ser); // Constructor when using HardwareSerial
-  boolean begin(uint16_t baud = 38400);
+  boolean begin(uint16 baud = 38400);
   boolean reset(void);
   boolean TVon(void);
   boolean TVoff(void);
   boolean takePicture(void);
-  uint8_t *readPicture(uint8_t n);
+  uint8 *readPicture(uint8 n);
   boolean resumeVideo(void);
-  uint32_t frameLength(void);
+  uint32 frameLength(void);
   char *getVersion(void);
-  uint8_t available();
-  uint8_t getDownsize(void);
-  boolean setDownsize(uint8_t);
-  uint8_t getImageSize();
-  boolean setImageSize(uint8_t);
+  uint8 available();
+  uint8 getDownsize(void);
+  boolean setDownsize(uint8);
+  uint8 getImageSize();
+  boolean setImageSize(uint8);
   boolean getMotionDetect();
-  uint8_t getMotionStatus(uint8_t);
+  uint8 getMotionStatus(uint8);
   boolean motionDetected();
   boolean setMotionDetect(boolean f);
-  boolean setMotionStatus(uint8_t x, uint8_t d1, uint8_t d2);
-  boolean cameraFrameBuffCtrl(uint8_t command);
-  uint8_t getCompression();
-  boolean setCompression(uint8_t c);
+  boolean setMotionStatus(uint8 x, uint8 d1, uint8 d2);
+  boolean cameraFrameBuffCtrl(uint8 command);
+  uint8 getCompression();
+  boolean setCompression(uint8 c);
   
-  boolean getPTZ(uint16_t &w, uint16_t &h, uint16_t &wz, uint16_t &hz, uint16_t &pan, uint16_t &tilt);
-  boolean setPTZ(uint16_t wz, uint16_t hz, uint16_t pan, uint16_t tilt);
+  boolean getPTZ(uint16 &w, uint16 &h, uint16 &wz, uint16 &hz, uint16 &pan, uint16 &tilt);
+  boolean setPTZ(uint16 wz, uint16 hz, uint16 pan, uint16 tilt);
 
-  void OSD(uint8_t x, uint8_t y, char *s); // isnt supported by the chip :(
+  void OSD(uint8 x, uint8 y, char *s); // isnt supported by the chip :(
   
  private:
-  uint8_t  serialNum;
-  uint8_t  camerabuff[CAMERABUFFSIZ+1];
-  uint8_t  bufferLen;
-  uint16_t frameptr;
-#if ARDUINO >= 100
-  SoftwareSerial *swSerial;
-#else
-  NewSoftSerial  *swSerial;
-#endif
+  uint8  serialNum;
+  uint8  camerabuff[CAMERABUFFSIZ+1];
+  uint8  bufferLen;
+  uint16 frameptr;
   HardwareSerial *hwSerial;
 
   void common_init(void);
-  boolean runCommand(uint8_t cmd, uint8_t args[], uint8_t argn, uint8_t resp, boolean flushflag = true); 
-  void sendCommand(uint8_t cmd, uint8_t args[], uint8_t argn); 
-  uint8_t readResponse(uint8_t numbytes, uint8_t timeout);
-  boolean verifyResponse(uint8_t command);
+  boolean runCommand(uint8 cmd, uint8 args[], uint8 argn, uint8 resp, boolean flushflag = true); 
+  void sendCommand(uint8 cmd, uint8 args[], uint8 argn); 
+  uint8 readResponse(uint8 numbytes, uint8 timeout);
+  boolean verifyResponse(uint8 command);
   void printBuff(void);
 };
+
+        
