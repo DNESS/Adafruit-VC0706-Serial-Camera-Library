@@ -1,3 +1,8 @@
+
+  Maple port of VC0706 library from Adafruit
+
+  *******************************************************************
+
   This is a library for the Adafruit TTL JPEG Camera (VC0706 chipset)
 
   Pick one up today in the adafruit shop!
